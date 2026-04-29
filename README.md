@@ -39,8 +39,5 @@ Created dashboards to visualize:
 - Identified successful compromise through RDP login
 - Demonstrated log correlation and SIEM-based threat detection
 
-## Screenshots
-(Add dashboard screenshots here)
-
 ## Conclusion
 This project demonstrates practical experience in detecting and analyzing brute-force attacks using SIEM tools, along with understanding authentication logs and security monitoring workflows.
