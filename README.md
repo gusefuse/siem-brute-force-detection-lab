@@ -43,6 +43,14 @@ Created dashboards to visualize:
 ### Failed Login Attempts Over Time
 <img width="1855" height="312" alt="image" src="https://github.com/user-attachments/assets/84fa0498-4cd5-45e5-8839-cce5debadcd2" />
 
+### Attacker IP Distribution
+<img width="1849" height="330" alt="image" src="https://github.com/user-attachments/assets/4e53ae7d-fbe3-4129-8d3f-03f5fe78b992" />
+
+### Successful RDP Logins
+<img width="1850" height="339" alt="image" src="https://github.com/user-attachments/assets/0fbf3d87-2a28-4320-9fef-a131cf555e47" />
+
+### Targeted User Accounts
+<img width="1855" height="328" alt="image" src="https://github.com/user-attachments/assets/4650114f-4917-444c-ab5b-fb7a60afa507" />
 
 ## Conclusion
 This project demonstrates practical experience in detecting and analyzing brute-force attacks using SIEM tools, along with understanding authentication logs and security monitoring workflows.
