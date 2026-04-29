@@ -1,0 +1,79 @@
+# ===============================
+# 1. View Failed Login Attempts (Event ID 4625)
+# ===============================
+index=* EventCode=4625
+
+# ===============================
+# 2. Count Failed Logins Over Time
+# ===============================
+index=* EventCode=4625
+| timechart span=10s count
+
+# ===============================
+# 3. Extract Source IP Address
+# ===============================
+index=* EventCode=4625
+| rex "Source Network Address:\s(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+
+# ===============================
+# 4. Identify Top Attacker IP
+# ===============================
+index=* EventCode=4625
+| rex "Source Network Address:\s(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| where src_ip!="127.0.0.1"
+| stats count by src_ip
+| sort -count
+
+# ===============================
+# 5. Extract Target Username
+# ===============================
+index=* EventCode=4625
+| rex "Account For Which Logon Failed:\s+Security ID:.*\s+Account Name:\s+(?<user>\w+)"
+| stats count by user
+
+# ===============================
+# 6. Combine Attacker IP + Target User
+# ===============================
+index=* EventCode=4625
+| rex "Source Network Address:\s(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| rex "Account For Which Logon Failed:\s+Security ID:.*\s+Account Name:\s+(?<user>\w+)"
+| where src_ip!="127.0.0.1"
+| stats count by src_ip, user
+
+# ===============================
+# 7. View Successful Logins (Event ID 4624)
+# ===============================
+index=* EventCode=4624
+
+# ===============================
+# 8. Detect Successful RDP Logins (Logon Type 10)
+# ===============================
+index=* EventCode=4624 Logon_Type=10
+| rex "Source Network Address:\s(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| stats count by src_ip
+
+# ===============================
+# 9. Extract Username from Successful Logins
+# ===============================
+index=* EventCode=4624 Logon_Type=10
+| rex "New Logon:.*\s+Account Name:\s+(?<user>\w+)"
+| stats count by user
+
+# ===============================
+# 10. Correlate Failed and Successful Logins
+# ===============================
+index=* (EventCode=4625 OR EventCode=4624)
+| rex "Source Network Address:\s(?<src_ip>\d+\.\d+\.\d+\.\d+)"
+| stats count by src_ip, EventCode
+
+# ===============================
+# 11. View Raw Timestamps (for custom time range)
+# ===============================
+index=* EventCode=4625
+| table _time
+
+# ===============================
+# 12. Sort Events by Time
+# ===============================
+index=* EventCode=4625
+| sort _time
